@@ -1,0 +1,12 @@
+.board {
+  border: 1px solid #808080;
+  border-radius: 5px;
+  margin: 5px auto;
+  padding: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  background-color: #eee;
+  max-width: 900px;
+  width: 100%;
+  justify-content: center;
+}

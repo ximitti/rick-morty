@@ -1,5 +1,6 @@
 import { Component } from "react";
 import "./App.css";
+import Board from "./components/Board";
 import CharacterList from "./components/CharacterList";
 
 class App extends Component {
@@ -17,7 +18,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <CharacterList list={this.state.characterList} />
+        <Board>
+          <CharacterList list={this.state.characterList} />
+        </Board>
       </div>
     );
   }

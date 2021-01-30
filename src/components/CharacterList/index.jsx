@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Border from "../Border";
 import Character from "../Character";
 
 class CharacterList extends Component {
@@ -7,11 +8,13 @@ class CharacterList extends Component {
     const { list } = this.props;
     console.log(list);
     return (
-      <div>
+      <>
         {list.map((char) => (
-          <Character key={char.id} name={char.name} />
+          <Border>
+            <Character key={char.id} char={char} />
+          </Border>
         ))}
-      </div>
+      </>
     );
   }
 }
