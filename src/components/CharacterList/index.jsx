@@ -4,9 +4,7 @@ import Character from "../Character";
 
 class CharacterList extends Component {
   render() {
-    console.log(this.props);
     const { list } = this.props;
-    console.log(list);
     return (
       <>
         {list.map((char) => (
