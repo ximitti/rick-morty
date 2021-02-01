@@ -21,20 +21,13 @@ class App extends Component {
       .catch((error) => console.log(error));
   };
 
-  nextPage = () => {
-    fetch(this.state.info.next)
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          info: { next: data.info.next, prev: data.info.prev },
-          characterList: data.results,
-        });
-      })
-      .catch((error) => console.log(error));
-  };
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps);
+    console.log(prevState);
+  }
 
-  prevPage = () => {
-    fetch(this.state.info.prev)
+  handleFetch = (url) => {
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         this.setState({
@@ -46,15 +39,27 @@ class App extends Component {
   };
 
   render() {
+    const { prev, next } = this.state.info;
     return (
       <div className="App">
+        <h1>Personagens Rick and Morty</h1>
         <div>
-          {this.state.info.prev && (
-            <button onClick={this.prevPage}>prev</button>
-          )}
-          {this.state.info.next && (
-            <button onClick={this.nextPage}>next</button>
-          )}
+          {
+            <button
+              disabled={prev ? false : true}
+              onClick={() => this.handleFetch(prev)}
+            >
+              prev
+            </button>
+          }
+          {
+            <button
+              disabled={next ? false : true}
+              onClick={() => this.handleFetch(next)}
+            >
+              next
+            </button>
+          }
         </div>
         <Board>
           <CharacterList list={this.state.characterList} />
