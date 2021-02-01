@@ -2,28 +2,29 @@ import { Component } from "react";
 import "./App.css";
 import Board from "./components/Board";
 import CharacterList from "./components/CharacterList";
+import Button from "./components/Button";
 
 class App extends Component {
   state = {
     info: { next: "", prev: "" },
     characterList: [],
+    changePage: { prev: false, next: false },
   };
+  API = "https://rickandmortyapi.com/api/character/";
 
   componentDidMount = () => {
-    fetch("https://rickandmortyapi.com/api/character/")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          info: { next: data.info.next, prev: data.info.prev },
-          characterList: data.results,
-        });
-      })
-      .catch((error) => console.log(error));
+    this.handleFetch(this.API);
   };
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps);
-    console.log(prevState);
+    const { prev, next } = this.state.changePage;
+    if (prev) {
+      this.handleFetch(this.state.info.prev);
+    }
+
+    if (next) {
+      this.handleFetch(this.state.info.next);
+    }
   }
 
   handleFetch = (url) => {
@@ -33,9 +34,22 @@ class App extends Component {
         this.setState({
           info: { next: data.info.next, prev: data.info.prev },
           characterList: data.results,
+          changePage: { prev: false, next: false },
         });
       })
       .catch((error) => console.log(error));
+  };
+
+  handlePrev = () => {
+    const { changePage } = this.state;
+    const { prev } = changePage;
+    this.setState({ changePage: { ...changePage, prev: !prev } });
+  };
+
+  handleNext = () => {
+    const { changePage } = this.state;
+    const { next } = changePage;
+    this.setState({ changePage: { ...changePage, next: !next } });
   };
 
   render() {
@@ -44,22 +58,8 @@ class App extends Component {
       <div className="App">
         <h1>Personagens Rick and Morty</h1>
         <div>
-          {
-            <button
-              disabled={prev ? false : true}
-              onClick={() => this.handleFetch(prev)}
-            >
-              prev
-            </button>
-          }
-          {
-            <button
-              disabled={next ? false : true}
-              onClick={() => this.handleFetch(next)}
-            >
-              next
-            </button>
-          }
+          <Button disabled={prev} func={this.handlePrev} text={"prev"} />
+          <Button disabled={next} func={this.handleNext} text={"next"} />
         </div>
         <Board>
           <CharacterList list={this.state.characterList} />
